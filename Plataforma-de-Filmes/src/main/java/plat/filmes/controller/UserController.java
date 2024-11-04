@@ -1,8 +1,8 @@
 package plat.filmes.controller;
 
-import jakarta.annotation.security.PermitAll;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import plat.filmes.model.DTO.UserDTO;
 import plat.filmes.model.User;
 import plat.filmes.service.UserService;
 
@@ -33,6 +33,12 @@ public class UserController {
     public ResponseEntity<Optional<User>> deleteUserById(@PathVariable Long id){
         userService.delete(id);
         return ResponseEntity.ok().build();
+    }
+
+    @PostMapping
+    public ResponseEntity<User> create (@RequestBody UserDTO userDTO){
+        User usuarioCadastrado = userService.create(userDTO);
+        return ResponseEntity.ok(usuarioCadastrado);
     }
 
 

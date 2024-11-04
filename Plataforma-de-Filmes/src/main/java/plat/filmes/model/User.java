@@ -1,49 +1,87 @@
 package plat.filmes.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-@Entity (name = "tb_user")
-public class User {
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = "id")
+@Entity (name = "tb_users")
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String name;
+
+    private String login;
     private String password;
     private Perfil perfil;
 
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
+    public User (String login, String password,Perfil perfil){
+        this.login = login;
         this.password = password;
-    }
-
-    public Perfil getPerfil() {
-        return perfil;
-    }
-
-    public void setPerfil(Perfil perfil) {
         this.perfil = perfil;
     }
 
-    public Long getId() {
-        return id;
+    @OneToMany
+    private List<Movie> movieList = new ArrayList<>();
+
+
+    @Override
+    public String getPassword() {
+        return this.password;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    @Override
+    public String getUsername() {
+        return this.login;
     }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.perfil == Perfil.MODERADOR){
+            return List.of(new SimpleGrantedAuthority("moderador"));
+        } if(this.perfil == Perfil.AVANCADO) {
+            return List.of(new SimpleGrantedAuthority("avancado"));
+        } if (this.perfil == Perfil.BASICO) {
+            return List.of(new SimpleGrantedAuthority("basico"));
+        } if (this.perfil == Perfil.LEITOR) {
+            return List.of(new SimpleGrantedAuthority("leitor"));
+        }
+        return List.of();
+    }
+
 
 
 }

@@ -46,7 +46,7 @@ public class UserService implements plat.filmes.service.UserService {
     public User create(UserDTO userDTO) {
         User usuarioCadastrado = new User();
         usuarioCadastrado.setId(usuarioCadastrado.getId());
-        usuarioCadastrado.setName(userDTO.getName());
+        usuarioCadastrado.setLogin(userDTO.getLogin());
         usuarioCadastrado.setPassword(userDTO.getPassword());
         usuarioCadastrado.setPerfil(Perfil.LEITOR);
         return userRepository.save(usuarioCadastrado);
