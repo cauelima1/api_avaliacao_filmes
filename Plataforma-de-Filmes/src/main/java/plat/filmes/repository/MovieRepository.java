@@ -6,7 +6,7 @@ import plat.filmes.model.Movie;
 
 import java.util.Optional;
 
-@Repository
+
 public interface MovieRepository extends JpaRepository<Movie, String> {
 
 }

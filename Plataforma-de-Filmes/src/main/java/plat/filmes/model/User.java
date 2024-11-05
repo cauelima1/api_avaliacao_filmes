@@ -17,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
-@Entity (name = "tb_users")
+@Entity(name = "tb_users")
 public class User implements UserDetails {
 
     @Id
@@ -28,14 +28,16 @@ public class User implements UserDetails {
     private String password;
     private Perfil perfil;
 
+    @OneToMany
+    private List<Movie> movieList = new ArrayList<>();
+
     public User (String login, String password,Perfil perfil){
         this.login = login;
         this.password = password;
         this.perfil = perfil;
     }
 
-    @OneToMany
-    private List<Movie> movieList = new ArrayList<>();
+
 
 
     @Override
