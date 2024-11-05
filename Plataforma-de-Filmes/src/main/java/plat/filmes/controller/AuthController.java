@@ -1,7 +1,6 @@
 package plat.filmes.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,6 +16,8 @@ import plat.filmes.model.DTO.RegisterDTO;
 import plat.filmes.model.User;
 import plat.filmes.repository.UserRepository;
 import plat.filmes.security.TokenService;
+import plat.filmes.service.UserService;
+import plat.filmes.service.impl.UserServiceImpl;
 
 
 @RestController
@@ -35,9 +36,7 @@ public class AuthController {
     public ResponseEntity login (@RequestBody @Validated AuthDTO data){
         var usernamePassord = new UsernamePasswordAuthenticationToken(data.login(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassord);
-
         var token = tokenService.generateToken((User) auth.getPrincipal());
-
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
 

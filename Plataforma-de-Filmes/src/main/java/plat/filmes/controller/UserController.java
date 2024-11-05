@@ -35,11 +35,6 @@ public class UserController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping
-    public ResponseEntity<User> create (@RequestBody UserDTO userDTO){
-        User usuarioCadastrado = userService.create(userDTO);
-        return ResponseEntity.ok(usuarioCadastrado);
-    }
 
 
 }

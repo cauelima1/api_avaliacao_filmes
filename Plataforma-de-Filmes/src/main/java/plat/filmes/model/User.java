@@ -27,6 +27,7 @@ public class User implements UserDetails {
     private String login;
     private String password;
     private Perfil perfil;
+    private int points;
 
     @OneToMany
     private List<Movie> movieList = new ArrayList<>();
@@ -36,8 +37,6 @@ public class User implements UserDetails {
         this.password = password;
         this.perfil = perfil;
     }
-
-
 
 
     @Override

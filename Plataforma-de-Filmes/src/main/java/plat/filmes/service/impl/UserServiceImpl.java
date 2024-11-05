@@ -9,12 +9,13 @@ import plat.filmes.model.User;
 import plat.filmes.repository.MovieRepository;
 import plat.filmes.repository.UserRepository;
 import plat.filmes.service.OMDBService;
+import plat.filmes.service.UserService;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserService implements plat.filmes.service.UserService {
+public class UserServiceImpl implements UserService {
 
     @Autowired
     private OMDBService omdbService;
@@ -22,7 +23,7 @@ public class UserService implements plat.filmes.service.UserService {
     private final MovieRepository movieRepository;
     private final UserRepository userRepository;
 
-    public UserService(MovieRepository movieRepository, UserRepository usuarioRepository) {
+    public UserServiceImpl(MovieRepository movieRepository, UserRepository usuarioRepository) {
         this.movieRepository = movieRepository;
         this.userRepository = usuarioRepository;
     }
@@ -48,7 +49,6 @@ public class UserService implements plat.filmes.service.UserService {
         usuarioCadastrado.setId(usuarioCadastrado.getId());
         usuarioCadastrado.setLogin(userDTO.getLogin());
         usuarioCadastrado.setPassword(userDTO.getPassword());
-        usuarioCadastrado.setPerfil(Perfil.LEITOR);
         return userRepository.save(usuarioCadastrado);
     }
 
@@ -56,6 +56,12 @@ public class UserService implements plat.filmes.service.UserService {
         Movie movie = omdbService.consultMovie(name);
         movieRepository.save(movie);
         return movie;
+    }
+
+    public void pointSystemLeitor(User user){
+        if (user.getPerfil().equals("LEITOR")){
+            user.setPoints(+1);
+        }
     }
 
 }
