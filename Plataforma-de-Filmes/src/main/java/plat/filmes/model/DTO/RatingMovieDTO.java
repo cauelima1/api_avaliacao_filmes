@@ -3,7 +3,9 @@ package plat.filmes.model.DTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import plat.filmes.model.Movie;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Data
@@ -12,5 +14,5 @@ import java.util.List;
 public class RatingMovieDTO {
 
     private String ImdbID;
-    private List<String> ratingMovieByUser; //como fazer um map ou algo similar
+    private double ratingMovieByUser;
 }

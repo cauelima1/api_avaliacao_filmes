@@ -3,7 +3,6 @@ package plat.filmes.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import plat.filmes.model.DTO.UserDTO;
-import plat.filmes.model.Movie;
 import plat.filmes.model.Perfil;
 import plat.filmes.model.User;
 import plat.filmes.repository.MovieRepository;
@@ -49,19 +48,17 @@ public class UserServiceImpl implements UserService {
         usuarioCadastrado.setId(usuarioCadastrado.getId());
         usuarioCadastrado.setLogin(userDTO.getLogin());
         usuarioCadastrado.setPassword(userDTO.getPassword());
+        usuarioCadastrado.setPerfil(usuarioCadastrado.getPerfil());
+        usuarioCadastrado.setPoints(0);
         return userRepository.save(usuarioCadastrado);
     }
 
-    public Movie consultMovie (String name) {
-        Movie movie = omdbService.consultMovie(name);
-        movieRepository.save(movie);
-        return movie;
-    }
+//    public Movie consultMovie (String name) {
+//        Movie movie = omdbService.consultMovie(name);
+//        movieRepository.save(movie);
+//        return movie;
+//    }
 
-    public void pointSystemLeitor(User user){
-        if (user.getPerfil().equals("LEITOR")){
-            user.setPoints(+1);
-        }
-    }
+
 
 }

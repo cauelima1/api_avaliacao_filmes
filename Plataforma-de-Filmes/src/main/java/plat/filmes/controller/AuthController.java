@@ -16,8 +16,8 @@ import plat.filmes.model.DTO.RegisterDTO;
 import plat.filmes.model.User;
 import plat.filmes.repository.UserRepository;
 import plat.filmes.security.TokenService;
-import plat.filmes.service.UserService;
-import plat.filmes.service.impl.UserServiceImpl;
+
+
 
 
 @RestController
@@ -32,6 +32,7 @@ public class AuthController {
 
     @Autowired
     private TokenService tokenService;
+
     @PostMapping("/login")
     public ResponseEntity login (@RequestBody @Validated AuthDTO data){
         var usernamePassord = new UsernamePasswordAuthenticationToken(data.login(), data.password());

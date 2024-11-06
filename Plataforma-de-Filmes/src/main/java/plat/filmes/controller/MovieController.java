@@ -3,13 +3,14 @@ package plat.filmes.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import plat.filmes.model.DTO.CommentsMovieDTO;
 import plat.filmes.model.DTO.RatingMovieDTO;
 import plat.filmes.model.Movie;
+import plat.filmes.model.User;
 import plat.filmes.repository.MovieRepository;
-import plat.filmes.service.MovieService;
+import plat.filmes.repository.UserRepository;
 import plat.filmes.service.impl.MovieServiceImpl;
-import plat.filmes.service.impl.UserServiceImpl;
+
+import java.util.List;
 
 /*
 Classe criada para verificar os filmes diretamente do metodo GET no Insomnia
@@ -18,40 +19,40 @@ Classe criada para verificar os filmes diretamente do metodo GET no Insomnia
 @RequestMapping("/movies")
 public class MovieController {
 
+
     @Autowired
-    private UserServiceImpl userServiceImpl;
+    private UserRepository userRepository;
 
-
-    private final MovieServiceImpl movieService;
     private final MovieRepository movieRepository;
-    private final UserServiceImpl userService;
+    private final MovieServiceImpl movieService;
 
-    public MovieController(MovieServiceImpl movieService, MovieRepository movieRepository, UserServiceImpl usuarioService) {
-        this.movieService = movieService;
+    public MovieController(MovieRepository movieRepository, MovieServiceImpl movieService) {
         this.movieRepository = movieRepository;
-        this.userService = usuarioService;
+        this.movieService = movieService;
     }
 
     @GetMapping("/{name}")
     public ResponseEntity<Movie> ConsultMovie(@PathVariable String name){
-        return ResponseEntity.ok(userService.consultMovie(name));
+        return ResponseEntity.ok(movieService.consultMovie(name));
     }
 
-
-    //postar comentarios - TODO -> Verificar Perfil
-    @PostMapping("/movies/comment")
-    public ResponseEntity<Movie> CommentMovie(@RequestBody CommentsMovieDTO movieDTO){
-      Movie commentedMovie = movieService.create(movieDTO);
-      return ResponseEntity.ok(commentedMovie);
+    @GetMapping
+    public ResponseEntity<List<Movie>> showAllMovies(){
+        return ResponseEntity.ok(movieRepository.findAll());
     }
+//    //postar comentarios - TODO -> Verificar Perfil
+//    @PostMapping("/movies/comment")
+//    public ResponseEntity<Movie> CommentMovie(@RequestBody CommentsMovieDTO movieDTO){
+//      Movie commentedMovie = movieService.create(movieDTO);
+//      return ResponseEntity.ok(commentedMovie);
+//    }
 
-    //postar avaliacao - TODO -> como verificar perfil
-    @PostMapping("movies/rating")
+
+    @PostMapping("/movies/rating")
     public ResponseEntity<Movie> MovieRating(@RequestBody RatingMovieDTO ratingMovieDTO){
         Movie ratedMovie = movieService.ratingMovieByUser(ratingMovieDTO);
         return ResponseEntity.ok(ratedMovie);
     }
-
 
 
 }

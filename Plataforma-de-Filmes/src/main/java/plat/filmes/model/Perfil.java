@@ -1,10 +1,10 @@
 package plat.filmes.model;
 
 public enum Perfil {
-    LEITOR("LEITOR"),
-    BASICO("BASICO"),
-    AVANCADO("AVANCADO"),
-    MODERADOR("MODERADOR");
+    LEITOR("Leitor"),
+    BASICO("Basico"),
+    AVANCADO("Avancado"),
+    MODERADOR("Moderador");
 
     private String role;
 

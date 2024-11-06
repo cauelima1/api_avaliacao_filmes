@@ -12,5 +12,5 @@ public interface MovieService {
 
     List<Movie> findAll();
 
-    Movie create(CommentsMovieDTO movieDTO);
+    Movie create(Movie movie);
 }

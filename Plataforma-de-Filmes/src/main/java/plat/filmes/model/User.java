@@ -13,9 +13,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
+
 @EqualsAndHashCode(of = "id")
 @Entity(name = "tb_users")
 public class User implements UserDetails {
@@ -29,13 +27,69 @@ public class User implements UserDetails {
     private Perfil perfil;
     private int points;
 
-    @OneToMany
+    @ManyToMany
     private List<Movie> movieList = new ArrayList<>();
 
     public User (String login, String password,Perfil perfil){
         this.login = login;
         this.password = password;
         this.perfil = perfil;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public Perfil getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(Perfil perfil) {
+        this.perfil = perfil;
+    }
+
+    public int getPoints() {
+        return points;
+    }
+
+    public void setPoints(int points) {
+        this.points = points;
+    }
+
+    public List<Movie> getMovieList() {
+        return movieList;
+    }
+
+    public void setMovieList(List<Movie> movieList) {
+        this.movieList = movieList;
+    }
+
+    public User() {
+    }
+
+    public User(Long id, String login, String password, Perfil perfil, int points, List<Movie> movieList) {
+        this.id = id;
+        this.login = login;
+        this.password = password;
+        this.perfil = perfil;
+        this.points = points;
+        this.movieList = movieList;
     }
 
 
@@ -82,7 +136,5 @@ public class User implements UserDetails {
         }
         return List.of();
     }
-
-
 
 }

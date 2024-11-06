@@ -1,12 +1,16 @@
 package plat.filmes.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
-import plat.filmes.model.DTO.CommentsMovieDTO;
+import plat.filmes.model.DTO.OmdbDTO;
 import plat.filmes.model.DTO.RatingMovieDTO;
 import plat.filmes.model.Movie;
+import plat.filmes.model.User;
 import plat.filmes.repository.MovieRepository;
 import plat.filmes.repository.UserRepository;
 import plat.filmes.service.MovieService;
+import plat.filmes.service.OMDBService;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,14 +18,16 @@ import java.util.Optional;
 @Service
 public class MovieServiceImpl implements MovieService {
 
-    private final UserRepository userRepository;
-    private final MovieRepository movieRepository;
-    private final UserServiceImpl userServiceImpl;
+    @Autowired
+    private OMDBService omdbService;
 
-    public MovieServiceImpl(UserRepository userRepository, MovieRepository movieRepository, UserServiceImpl userServiceImpl) {
-        this.userRepository = userRepository;
+    @Autowired
+    private UserRepository userRepository;
+
+    private final MovieRepository movieRepository;
+
+    public MovieServiceImpl(MovieRepository movieRepository) {
         this.movieRepository = movieRepository;
-        this.userServiceImpl = userServiceImpl;
     }
 
     @Override
@@ -31,27 +37,35 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> findAll() {
-        return List.of();
+        return this.findAll();
     }
 
     @Override
-    public Movie create(CommentsMovieDTO movieDTO) {
-        Movie commentedMovie = new Movie();
-        commentedMovie.setTittle(commentedMovie.getTittle());
-        commentedMovie.setImdbID(commentedMovie.getImdbID());
-        commentedMovie.setImdbRating(commentedMovie.getImdbRating());
-        commentedMovie.setComments(movieDTO.getComments());
-        return movieRepository.save(commentedMovie);
+    public Movie create(Movie movie) {
+        return null;
     }
 
-
+    public Movie consultMovie(String name) {
+        OmdbDTO omdbDTO = omdbService.consultMovie(name);
+        Movie movie = new Movie();
+        movie.setGenre(omdbDTO.getGenre());
+        movie.setImdbID(omdbDTO.getImdbID());
+        movie.setTitle(omdbDTO.getTitle());
+        movie.setImdbRating(omdbDTO.getImdbRating());
+        return movieRepository.save(movie);
+    }
 
     public Movie ratingMovieByUser(RatingMovieDTO ratingMovieDTO){
         Movie ratedMovie = new Movie();
-        ratedMovie.setTittle(ratedMovie.getTittle());
-        ratedMovie.setImdbID(ratedMovie.getImdbID());
+        ratedMovie.setTitle(ratedMovie.getTitle());
+        ratedMovie.setGenre(ratedMovie.getGenre());
         ratedMovie.setImdbRating(ratedMovie.getImdbRating());
-        ratedMovie.setUserRating(ratingMovieDTO.getRatingMovieByUser());
+
+//        reviews.setUserID(user.getId());
+//        reviews.setImdbID(ratingMovieDTO.getImdbID());
+//        reviews.setAvarageRating(ratingMovieDTO.getRatingMovieByUser());
+//        user.setUserPoints(+1);
+//        System.out.println(reviews);
         return movieRepository.save(ratedMovie);
     }
 }
