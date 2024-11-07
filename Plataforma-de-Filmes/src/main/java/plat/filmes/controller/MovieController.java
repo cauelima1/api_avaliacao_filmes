@@ -40,7 +40,7 @@ public class MovieController {
     public ResponseEntity<List<Movie>> showAllMovies(){
         return ResponseEntity.ok(movieRepository.findAll());
     }
-//    //postar comentarios - TODO -> Verificar Perfil
+
 //    @PostMapping("/movies/comment")
 //    public ResponseEntity<Movie> CommentMovie(@RequestBody CommentsMovieDTO movieDTO){
 //      Movie commentedMovie = movieService.create(movieDTO);

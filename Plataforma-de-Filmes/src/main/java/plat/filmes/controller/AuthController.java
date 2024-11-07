@@ -17,9 +17,6 @@ import plat.filmes.model.User;
 import plat.filmes.repository.UserRepository;
 import plat.filmes.security.TokenService;
 
-
-
-
 @RestController
 @RequestMapping("/auth")
 public class AuthController {

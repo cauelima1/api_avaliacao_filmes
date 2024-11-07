@@ -126,13 +126,13 @@ public class User implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if(this.perfil == Perfil.MODERADOR){
-            return List.of(new SimpleGrantedAuthority("moderador"));
+            return List.of(new SimpleGrantedAuthority("MODERADOR"));
         } if(this.perfil == Perfil.AVANCADO) {
-            return List.of(new SimpleGrantedAuthority("avancado"));
+            return List.of(new SimpleGrantedAuthority("AVANCADO"));
         } if (this.perfil == Perfil.BASICO) {
-            return List.of(new SimpleGrantedAuthority("basico"));
+            return List.of(new SimpleGrantedAuthority("BASICO"));
         } if (this.perfil == Perfil.LEITOR) {
-            return List.of(new SimpleGrantedAuthority("leitor"));
+            return List.of(new SimpleGrantedAuthority("LEITOR"));
         }
         return List.of();
     }

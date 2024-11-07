@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.List;
 
 
-@Entity (name = "tb_movies")
+@Entity
 public class Movie {
 
     @Id
@@ -14,20 +14,31 @@ public class Movie {
     private String Genre;
     private String imdbRating;
 
-    @ManyToMany
-    private List<Comments> commentsList;
+    @OneToMany(mappedBy = "movie")
+    private List<Comments> comments;
+
+    @OneToMany(mappedBy = "movie")
+    private List<Rating> rattings;
 
 
-    public List<Comments> getCommentsList() {
-        return commentsList;
+    public List<Comments> getComments() {
+        return comments;
     }
 
-    public Movie(List<Comments> commentsList) {
-        this.commentsList = commentsList;
+    public Movie(List<Comments> comments) {
+        this.comments = comments;
     }
 
-    public void setCommentsList(List<Comments> commentsList) {
-        this.commentsList = commentsList;
+    public List<Rating> getRattings() {
+        return rattings;
+    }
+
+    public void setRattings(List<Rating> rattings) {
+        this.rattings = rattings;
+    }
+
+    public void setComments(List<Comments> comments) {
+        this.comments = comments;
     }
 
     public String getImdbID() {

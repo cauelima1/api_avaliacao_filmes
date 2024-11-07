@@ -1,24 +1,21 @@
 package plat.filmes.model;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "comments")
-public class Comments {
+@Table(name = "ratting")
+public class Rating {
 
     @Id
+    private Long id;
     private String imdbID;
-    private Long userID;
-    private String comment;
+    private double ratingByUser;
 
     @ManyToOne
     @JoinColumn(name="movie")

@@ -41,7 +41,8 @@ public class TokenService {
                     .verify(token)
                     .getSubject();
         } catch (JWTVerificationException e){
-                return "";       }
+                throw new RuntimeException("Error on Token validation.");
+        }
     }
 
 
