@@ -5,7 +5,7 @@ import org.springframework.stereotype.Repository;
 import plat.filmes.model.Movie;
 
 
-@Repository
+
 public interface MovieRepository extends JpaRepository<Movie, String> {
 
 }

@@ -22,6 +22,8 @@ public class Rating {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String user;
+
+    @Column(unique = true)
     private String imdbId;
     private double ratingByUser;
 
