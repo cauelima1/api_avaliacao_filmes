@@ -5,12 +5,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import plat.filmes.model.DTO.RatingMovieDTO;
 import plat.filmes.model.Movie;
-import plat.filmes.model.User;
+import plat.filmes.model.Rating;
 import plat.filmes.repository.MovieRepository;
 import plat.filmes.repository.UserRepository;
 import plat.filmes.service.impl.MovieServiceImpl;
 
 import java.util.List;
+import java.util.Optional;
 
 /*
 Classe criada para verificar os filmes diretamente do metodo GET no Insomnia
@@ -48,11 +49,10 @@ public class MovieController {
 //    }
 
 
-    @PostMapping("/movies/rating")
-    public ResponseEntity<Movie> MovieRating(@RequestBody RatingMovieDTO ratingMovieDTO){
-        Movie ratedMovie = movieService.ratingMovieByUser(ratingMovieDTO);
+    @PutMapping("/rating/{imdbId}")
+    public ResponseEntity <Rating> MovieRating(@PathVariable("imdbId") String imdbId
+                                            , @RequestBody RatingMovieDTO ratingMovieDTO) throws Exception {
+        Rating ratedMovie = movieService.ratingMovieByUser(imdbId, ratingMovieDTO);
         return ResponseEntity.ok(ratedMovie);
     }
-
-
 }

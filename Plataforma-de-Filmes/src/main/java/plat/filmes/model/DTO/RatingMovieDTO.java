@@ -13,6 +13,5 @@ import java.util.List;
 @AllArgsConstructor
 public class RatingMovieDTO {
 
-    private String ImdbID;
     private double ratingMovieByUser;
 }

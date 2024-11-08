@@ -5,6 +5,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import plat.filmes.model.Rating;
 import plat.filmes.service.OMDBService;
 
 import java.net.URI;
@@ -27,9 +28,10 @@ public class PlataformaDeFilmesApplication implements CommandLineRunner {
 	private OMDBService omdbService;
 
 
-
 	@Override
 	public void run(String... args) throws Exception {
+
+
 
 		Scanner leitura = new Scanner(System.in);
 		System.out.println("Digite o título do filme para busca: ");
@@ -44,6 +46,8 @@ public class PlataformaDeFilmesApplication implements CommandLineRunner {
 				.build();
 		HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 		System.out.println(response.body());
+
+
 
 	}
 }

@@ -1,13 +1,14 @@
 package plat.filmes.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 import plat.filmes.model.DTO.OmdbDTO;
 import plat.filmes.model.DTO.RatingMovieDTO;
 import plat.filmes.model.Movie;
+import plat.filmes.model.Rating;
 import plat.filmes.model.User;
 import plat.filmes.repository.MovieRepository;
+import plat.filmes.repository.RatingRepository;
 import plat.filmes.repository.UserRepository;
 import plat.filmes.service.MovieService;
 import plat.filmes.service.OMDBService;
@@ -19,10 +20,16 @@ import java.util.Optional;
 public class MovieServiceImpl implements MovieService {
 
     @Autowired
+    private RatingRepository ratingRepository;
+
+    @Autowired
     private OMDBService omdbService;
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserServiceImpl userService;
 
     private final MovieRepository movieRepository;
 
@@ -52,20 +59,35 @@ public class MovieServiceImpl implements MovieService {
         movie.setImdbID(omdbDTO.getImdbID());
         movie.setTitle(omdbDTO.getTitle());
         movie.setImdbRating(omdbDTO.getImdbRating());
+
         return movieRepository.save(movie);
     }
 
-    public Movie ratingMovieByUser(RatingMovieDTO ratingMovieDTO){
-        Movie ratedMovie = new Movie();
-        ratedMovie.setTitle(ratedMovie.getTitle());
-        ratedMovie.setGenre(ratedMovie.getGenre());
-        ratedMovie.setImdbRating(ratedMovie.getImdbRating());
+    public Rating ratingMovieByUser(String imdbId, RatingMovieDTO ratingMovieDTO) {
+        User user = new User();
+        Rating rating = new Rating();
+        String login = userService.recoverUserLogin(Optional.of(user));
 
-//        reviews.setUserID(user.getId());
-//        reviews.setImdbID(ratingMovieDTO.getImdbID());
-//        reviews.setAvarageRating(ratingMovieDTO.getRatingMovieByUser());
-//        user.setUserPoints(+1);
-//        System.out.println(reviews);
-        return movieRepository.save(ratedMovie);
+        if (!login.isEmpty() && movieRepository.existsById(imdbId)) {
+            incrementPointsUser(user, login);
+
+            rating.setId(rating.getId());
+            rating.setUser(login);
+            rating.setImdbId(imdbId);
+            rating.setRatingByUser(ratingMovieDTO.getRatingMovieByUser());
+
+            return ratingRepository.save(rating);
+
+        } else {
+            throw new RuntimeException("Login or imdbID is wrong.");
+        }
+    }
+
+    //todo - fazer a logica de calcular a media na classe Movie
+    //TODO - ACRESCENTAR LOGICA ATE 20 PONTOS PARA VIRAR BASICO E FILTRAR PARA
+    public void incrementPointsUser(User user, String login) {
+        user = (User) userRepository.findByLogin(login);
+        user.setPoints(user.getPoints() + 1);
+        userRepository.save(user);
     }
 }

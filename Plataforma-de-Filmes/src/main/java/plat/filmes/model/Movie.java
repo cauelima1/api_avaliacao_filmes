@@ -1,10 +1,16 @@
 package plat.filmes.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import plat.filmes.repository.UserRepository;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
 @Entity
 public class Movie {
 
@@ -13,33 +19,31 @@ public class Movie {
     private String Title;
     private String Genre;
     private String imdbRating;
+    private double imdbUser;
 
-    @OneToMany(mappedBy = "movie")
-    private List<Comments> comments;
+    //    @OneToMany(mappedBy = "movie")
+//    private List<Comments> comments = new ArrayList<>();
 
-    @OneToMany(mappedBy = "movie")
-    private List<Rating> rattings;
-
-
-    public List<Comments> getComments() {
-        return comments;
+    public Movie(String imdbID, String title, String genre, String imdbRating, double imdbUser) {
+        this.imdbID = imdbID;
+        Title = title;
+        Genre = genre;
+        this.imdbRating = imdbRating;
+        this.imdbUser = imdbUser;
     }
 
-    public Movie(List<Comments> comments) {
-        this.comments = comments;
+    public Movie(double imdbUser) {
+        this.imdbUser = imdbUser;
     }
 
-    public List<Rating> getRattings() {
-        return rattings;
+    public double getImdbUser() {
+        return imdbUser;
     }
 
-    public void setRattings(List<Rating> rattings) {
-        this.rattings = rattings;
+    public void setImdbUser(double imdbUser) {
+        this.imdbUser = imdbUser;
     }
 
-    public void setComments(List<Comments> comments) {
-        this.comments = comments;
-    }
 
     public String getImdbID() {
         return imdbID;
@@ -73,16 +77,8 @@ public class Movie {
         this.imdbRating = imdbRating;
     }
 
-
-    public Movie(String imdbID, String Title, String genre, String imdbRating) {
-        this.imdbID = imdbID;
-        this.Title = Title;
-        this.Genre = genre;
-        this.imdbRating = imdbRating;
-    }
-
-
     public Movie (){
     }
+
 
 }

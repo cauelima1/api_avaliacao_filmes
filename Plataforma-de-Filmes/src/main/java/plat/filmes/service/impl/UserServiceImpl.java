@@ -1,9 +1,10 @@
 package plat.filmes.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import plat.filmes.model.DTO.UserDTO;
-import plat.filmes.model.Perfil;
 import plat.filmes.model.User;
 import plat.filmes.repository.MovieRepository;
 import plat.filmes.repository.UserRepository;
@@ -53,12 +54,18 @@ public class UserServiceImpl implements UserService {
         return userRepository.save(usuarioCadastrado);
     }
 
-//    public Movie consultMovie (String name) {
-//        Movie movie = omdbService.consultMovie(name);
-//        movieRepository.save(movie);
-//        return movie;
-//    }
+    public String recoverUserLogin(Optional<User> user) {
+        Object principal = SecurityContextHolder.getContext().getAuthentication()
+                .getPrincipal();
+        String name;
 
+        if (principal instanceof UserDetails){
+            name = ((UserDetails)principal).getUsername();
+        } else {
+            name = principal.toString();
+        }
+        return name;
+    }
 
 
 }

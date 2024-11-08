@@ -27,10 +27,7 @@ public class User implements UserDetails {
     private Perfil perfil;
     private int points;
 
-    @ManyToMany
-    private List<Movie> movieList = new ArrayList<>();
-
-    public User (String login, String password,Perfil perfil){
+     public User (String login, String password,Perfil perfil){
         this.login = login;
         this.password = password;
         this.perfil = perfil;
@@ -72,24 +69,16 @@ public class User implements UserDetails {
         this.points = points;
     }
 
-    public List<Movie> getMovieList() {
-        return movieList;
-    }
-
-    public void setMovieList(List<Movie> movieList) {
-        this.movieList = movieList;
-    }
-
     public User() {
     }
 
-    public User(Long id, String login, String password, Perfil perfil, int points, List<Movie> movieList) {
+    public User(Long id, String login, String password, Perfil perfil, int points) {
         this.id = id;
         this.login = login;
         this.password = password;
         this.perfil = perfil;
         this.points = points;
-        this.movieList = movieList;
+
     }
 
 
