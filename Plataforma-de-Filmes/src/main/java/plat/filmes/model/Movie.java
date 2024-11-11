@@ -3,12 +3,10 @@ package plat.filmes.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import plat.filmes.repository.UserRepository;
+import plat.filmes.repository.MovieRepository;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
 @Entity
@@ -19,10 +17,21 @@ public class Movie {
     private String Title;
     private String Genre;
     private String imdbRating;
-    private double imdbUser;
+    private Double imdbUser;
+//    private Comments comments;
 
-    //    @OneToMany(mappedBy = "movie")
-//    private List<Comments> comments = new ArrayList<>();
+//
+//    public Comments getComments() {
+//        return comments;
+//    }
+//
+//    public void setComments(Comments comments) {
+//        this.comments = comments;
+//    }
+//
+//    public Movie(Comments comments) {
+//        this.comments = comments;
+//    }
 
     public Movie(String imdbID, String title, String genre, String imdbRating, double imdbUser) {
         this.imdbID = imdbID;
@@ -40,7 +49,8 @@ public class Movie {
         return imdbUser;
     }
 
-    public void setImdbUser(double imdbUser) {
+
+    public void setImdbUser(Double imdbUser) {
         this.imdbUser = imdbUser;
     }
 

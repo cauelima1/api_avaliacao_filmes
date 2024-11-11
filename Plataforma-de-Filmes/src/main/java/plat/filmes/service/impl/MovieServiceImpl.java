@@ -3,10 +3,7 @@ package plat.filmes.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import plat.filmes.model.DTO.OmdbDTO;
-import plat.filmes.model.DTO.RatingMovieDTO;
 import plat.filmes.model.Movie;
-import plat.filmes.model.Rating;
-import plat.filmes.model.User;
 import plat.filmes.repository.MovieRepository;
 import plat.filmes.repository.RatingRepository;
 import plat.filmes.repository.UserRepository;
@@ -21,6 +18,9 @@ public class MovieServiceImpl implements MovieService {
 
     @Autowired
     private RatingRepository ratingRepository;
+
+    @Autowired
+    private RatingsServiceImpl ratingService;
 
     @Autowired
     private OMDBService omdbService;
@@ -44,7 +44,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> findAll() {
-        return this.findAll();
+        return movieRepository.findAll();
     }
 
     @Override
@@ -54,25 +54,20 @@ public class MovieServiceImpl implements MovieService {
 
     public Movie consultMovie(String name) {
         OmdbDTO omdbDTO = omdbService.consultMovie(name);
-        Movie movie = new Movie();
-        movie.setGenre(omdbDTO.getGenre());
-        movie.setImdbID(omdbDTO.getImdbID());
-        movie.setTitle(omdbDTO.getTitle());
-        movie.setImdbRating(omdbDTO.getImdbRating());
-
-        return movieRepository.save(movie);
+        if(!movieRepository.existsById(omdbDTO.getImdbID())) {
+            Movie movie = new Movie();
+            movie.setImdbUser(0D);
+            movie.setGenre(omdbDTO.getGenre());
+            movie.setImdbID(omdbDTO.getImdbID());
+            movie.setTitle(omdbDTO.getTitle());
+            movie.setImdbRating(omdbDTO.getImdbRating());
+            return movieRepository.save(movie);
+        } else {
+            if (movieRepository.existsById(omdbDTO.getImdbID()))
+                return movieRepository.findById(omdbDTO.getImdbID()).get();
+        }
+        return null;
     }
 
 
-
-
-
-//    public boolean verifyIfExists (Rating rating, String imdbId, String login){
-//        rating = ratingRepository.findBy
-//        if (ratingRepository.existsById(login) && ratingRepository.existsById(login))
-//            return false;
-//        }else{
-//            return true;
-//        }
-//    }
 }

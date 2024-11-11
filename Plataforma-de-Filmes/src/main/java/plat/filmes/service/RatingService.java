@@ -1,8 +1,7 @@
 package plat.filmes.service;
 
 import org.springframework.stereotype.Service;
-import plat.filmes.model.Movie;
-import plat.filmes.model.Rating;
+import plat.filmes.model.Ratings;
 
 import java.util.List;
 import java.util.Optional;
@@ -10,9 +9,9 @@ import java.util.Optional;
 @Service
 public interface RatingService {
 
-    Optional<Rating> findById(String id);
+    Optional<Ratings> findById(String id);
 
-    List<Rating> findAll();
+    List<Ratings> findAll();
 
-    Rating create(Rating rating);
+    Ratings create(Ratings ratings);
 }

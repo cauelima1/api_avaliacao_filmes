@@ -1,28 +1,28 @@
 package plat.filmes.model;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
 @Entity
-@Table(name = "comments", uniqueConstraints = {@UniqueConstraint(columnNames = {"user","imdbId"})})
-public class Comments {
-
+@Table(name = "ratings", uniqueConstraints = {@UniqueConstraint(columnNames = {"user","imdbId"})})
+public class Ratings {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column
-    private String comment;
+
     @Column
     private String imdbId;
+
     @Column
     private String user;
+
+    @Column
+    private double ratingByUser;
 
 }

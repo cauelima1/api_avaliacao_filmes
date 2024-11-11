@@ -1,21 +1,17 @@
 package plat.filmes.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import plat.filmes.model.DTO.RatingMovieDTO;
 import plat.filmes.model.Movie;
-import plat.filmes.model.Rating;
-import plat.filmes.model.User;
+import plat.filmes.model.Ratings;
 import plat.filmes.repository.MovieRepository;
 import plat.filmes.repository.RatingRepository;
-import plat.filmes.repository.UserRepository;
-import plat.filmes.service.RatingService;
 import plat.filmes.service.impl.MovieServiceImpl;
-import plat.filmes.service.impl.RatingServiceImpl;
+import plat.filmes.service.impl.RatingsServiceImpl;
 
 import java.util.List;
-import java.util.Optional;
 
 /*
 Classe criada para verificar os filmes diretamente do metodo GET no Insomnia
@@ -24,19 +20,21 @@ Classe criada para verificar os filmes diretamente do metodo GET no Insomnia
 @RequestMapping("/movies")
 public class MovieController {
 
-    @Autowired
-
-
-    private final RatingServiceImpl ratingService;
+    private final RatingsServiceImpl ratingService;
     private final RatingRepository ratingRepository;
     private final MovieRepository movieRepository;
     private final MovieServiceImpl movieService;
 
-    public MovieController(RatingServiceImpl ratingService, RatingRepository ratingRepository, MovieRepository movieRepository, MovieServiceImpl movieService) {
+    public MovieController(RatingsServiceImpl ratingService, RatingRepository ratingRepository, MovieRepository movieRepository, MovieServiceImpl movieService) {
         this.ratingService = ratingService;
         this.ratingRepository = ratingRepository;
         this.movieRepository = movieRepository;
         this.movieService = movieService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Movie>> showAllMovies(){
+        return ResponseEntity.ok(movieService.findAll());
     }
 
     @GetMapping("/{name}")
@@ -44,28 +42,21 @@ public class MovieController {
         return ResponseEntity.ok(movieService.consultMovie(name));
     }
 
-    @GetMapping
-    public ResponseEntity<List<Movie>> showAllMovies(){
-        return ResponseEntity.ok(movieRepository.findAll());
-    }
 
-//    @PostMapping("/movies/comment")
-//    public ResponseEntity<Movie> CommentMovie(@RequestBody CommentsMovieDTO movieDTO){
-//      Movie commentedMovie = movieService.create(movieDTO);
-//      return ResponseEntity.ok(commentedMovie);
-//    }
+    @GetMapping("/rating")
+    public ResponseEntity<List<Ratings>> showAllRatings () {
+        return ResponseEntity.ok(ratingService.findAll())  ;
+    }
 
 
     @PutMapping("/rating/{imdbId}")
-    public ResponseEntity <Rating> MovieRating(@PathVariable("imdbId") String imdbId
-                                            , @RequestBody RatingMovieDTO ratingMovieDTO) throws Exception {
-        Rating ratedMovie = ratingService.ratingMovieByUser(imdbId, ratingMovieDTO);
+    public ResponseEntity <Ratings> MovieRating(@PathVariable("imdbId") String imdbId
+                                            , @RequestBody RatingMovieDTO ratingMovieDTO) {
+        Ratings ratedMovie = ratingService.ratingMovieByUser(imdbId, ratingMovieDTO);
         return ResponseEntity.ok(ratedMovie);
     }
 
-    @GetMapping("/rating")
-    public ResponseEntity<List<Rating>> showAllUsers () {
-        return ResponseEntity.ok(ratingRepository.findAll())  ;
-    }
+
+
 
 }
