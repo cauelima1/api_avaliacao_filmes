@@ -19,13 +19,13 @@ import java.util.Optional;
 public class RatingsServiceImpl implements RatingService {
 
     @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
     private RatingRepository ratingRepository;
 
     @Autowired
     private UserServiceImpl userService;
-
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private MovieRepository movieRepository;
@@ -54,15 +54,16 @@ public class RatingsServiceImpl implements RatingService {
                 if (!ratingRepository.existsByImdbIdAndUser(imdbId, login)) {
                     Movie movieToRate = movieRepository.findById(imdbId).get();
                     movieToRate.setImdbUser(ratingMovieDTO.getRatingMovieByUser());
+                    user = (User) userRepository.findByLogin(login);
 
-                    incrementPointsUser(login);
+                    userService.incrementPointsUser(user);
                     Ratings ratings = new Ratings();
                     ratings.setId(ratings.getId());
                     ratings.setUser(login);
                     ratings.setImdbId(imdbId);
                     ratings.setRatingByUser(ratingMovieDTO.getRatingMovieByUser());
                     ratingRepository.save(ratings);
-                    imdbAverageRatingUser(imdbId);
+                    userService.AvarageRate(imdbId);
                     return ratings;
 
                 } else {
@@ -76,37 +77,9 @@ public class RatingsServiceImpl implements RatingService {
         }
     }
 
-    public void incrementPointsUser(String login) {
-        User user = (User) userRepository.findByLogin(login);
-        user.setPoints(user.getPoints() + 1);
-        userRepository.save(user);
-        pointsValidation(user);
-    }
-
-    public void pointsValidation (User user){
-        if (user.getPoints()>20){
-            user.setPerfil(Perfil.BASICO);
-        } if(user.getPoints()>100){
-            user.setPerfil(Perfil.AVANCADO);
-        }
-    }
-
-    public void imdbAverageRatingUser (String imdbId){
-
-        List<Ratings> ratings = ratingRepository.findByImdbId(imdbId);
-
-        double media = ratings.stream().mapToDouble(Ratings::getRatingByUser).average().orElse(0);
-        movieRepository.findById(imdbId).ifPresent(movie -> {
-            movie.setImdbUser(media);
-            movieRepository.save(movie);
-        });
-
-
-    }
-
-
-
-
-
 
 }
+
+
+
+

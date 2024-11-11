@@ -2,12 +2,16 @@ package plat.filmes.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import plat.filmes.model.DTO.UserDTO;
 import plat.filmes.model.Movie;
+import plat.filmes.model.Perfil;
+import plat.filmes.model.Ratings;
 import plat.filmes.model.User;
 import plat.filmes.repository.MovieRepository;
+import plat.filmes.repository.RatingRepository;
 import plat.filmes.repository.UserRepository;
 import plat.filmes.service.OMDBService;
 import plat.filmes.service.UserService;
@@ -21,12 +25,15 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private OMDBService omdbService;
 
+
     private final MovieRepository movieRepository;
     private final UserRepository userRepository;
+    private final RatingRepository ratingRepository;
 
-    public UserServiceImpl(MovieRepository movieRepository, UserRepository usuarioRepository) {
+    public UserServiceImpl(MovieRepository movieRepository, UserRepository usuarioRepository, RatingRepository ratingRepository) {
         this.movieRepository = movieRepository;
         this.userRepository = usuarioRepository;
+        this.ratingRepository = ratingRepository;
     }
 
     @Override
@@ -68,8 +75,36 @@ public class UserServiceImpl implements UserService {
         return name;
     }
 
+    public void pointsValidation (User user) {
+        if (!user.getPerfil().equals(Perfil.MODERADOR)) {
+            if (user.getPoints() >= 20 && user.getPoints() < 100) {
+                user.setPerfil(Perfil.BASICO);
+            }
+            if (user.getPoints() >= 100 && user.getPoints() < 1000) {
+                user.setPerfil(Perfil.AVANCADO);
+            }
+            if (user.getPoints() >= 1000){
+                user.setPerfil(Perfil.MODERADOR);
+            }
 
+       }
+    }
 
+    public void AvarageRate(String imdbId){
 
+        List<Ratings> ratings = ratingRepository.findByImdbId(imdbId);
 
+        double media = ratings.stream().mapToDouble(Ratings::getRatingByUser).average().orElse(0);
+        movieRepository.findById(imdbId).ifPresent(movie -> {
+            movie.setImdbUser(media);
+            movieRepository.save(movie);
+        });
+
+    }
+
+    public void incrementPointsUser(User user) {
+        user.setPoints(user.getPoints() + 1);
+        userRepository.save(user);
+        pointsValidation(user);
+    }
 }

@@ -1,5 +1,6 @@
 package plat.filmes.model;
 
+
 public enum Perfil {
     LEITOR("LEITOR"),
     BASICO("BASICO"),
@@ -15,4 +16,6 @@ public enum Perfil {
     public String getRole(){
         return role;
     }
+
+
 }

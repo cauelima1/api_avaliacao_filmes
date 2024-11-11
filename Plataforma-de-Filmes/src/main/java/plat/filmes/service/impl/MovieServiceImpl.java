@@ -56,11 +56,12 @@ public class MovieServiceImpl implements MovieService {
         OmdbDTO omdbDTO = omdbService.consultMovie(name);
         if(!movieRepository.existsById(omdbDTO.getImdbID())) {
             Movie movie = new Movie();
-            movie.setImdbUser(0D);
+            movie.setImdbUser(0d);
             movie.setGenre(omdbDTO.getGenre());
             movie.setImdbID(omdbDTO.getImdbID());
             movie.setTitle(omdbDTO.getTitle());
             movie.setImdbRating(omdbDTO.getImdbRating());
+
             return movieRepository.save(movie);
         } else {
             if (movieRepository.existsById(omdbDTO.getImdbID()))

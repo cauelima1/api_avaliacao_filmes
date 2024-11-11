@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import plat.filmes.model.Perfil;
 
 @Configuration
 @EnableWebSecurity
@@ -31,9 +32,11 @@ public class SecurityConfigurations {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.GET,"/users").permitAll()
                         .requestMatchers(HttpMethod.GET, "/movies").permitAll()
+                        .requestMatchers(HttpMethod.GET,"/movies/comments").permitAll()
                         .requestMatchers(HttpMethod.POST,"/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST,"/auth/register").permitAll()
                         .requestMatchers(HttpMethod.PUT,"/movies/rating").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/movies/comments").hasAnyRole("BASICO", "AVANCADO","MODERADOR")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

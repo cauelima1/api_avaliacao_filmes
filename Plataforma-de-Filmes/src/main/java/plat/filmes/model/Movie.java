@@ -18,20 +18,25 @@ public class Movie {
     private String Genre;
     private String imdbRating;
     private Double imdbUser;
-//    private Comments comments;
 
-//
-//    public Comments getComments() {
-//        return comments;
-//    }
-//
-//    public void setComments(Comments comments) {
-//        this.comments = comments;
-//    }
-//
-//    public Movie(Comments comments) {
-//        this.comments = comments;
-//    }
+    @OneToMany
+    private List<Comments> comments;
+
+    public List<Comments> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<Comments> comments) {
+        this.comments = comments;
+    }
+
+    public Movie(List<Comments> comments) {
+        this.comments = comments;
+    }
+
+
+
+
 
     public Movie(String imdbID, String title, String genre, String imdbRating, double imdbUser) {
         this.imdbID = imdbID;

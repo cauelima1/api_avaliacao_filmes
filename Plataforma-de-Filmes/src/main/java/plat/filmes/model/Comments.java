@@ -11,7 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "comments", uniqueConstraints = {@UniqueConstraint(columnNames = {"user","imdbId"})})
 public class Comments {
 
 
@@ -22,6 +21,8 @@ public class Comments {
     private String comment;
     @Column
     private String imdbId;
+    @Column
+    private String tittle;
     @Column
     private String user;
 
