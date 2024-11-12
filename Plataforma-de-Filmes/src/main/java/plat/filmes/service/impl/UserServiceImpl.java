@@ -2,11 +2,9 @@ package plat.filmes.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import plat.filmes.model.DTO.UserDTO;
-import plat.filmes.model.Movie;
 import plat.filmes.model.Perfil;
 import plat.filmes.model.Ratings;
 import plat.filmes.model.User;
@@ -75,6 +73,12 @@ public class UserServiceImpl implements UserService {
         return name;
     }
 
+    public void incrementPointsUser(User user) {
+        user.setPoints(user.getPoints() + 1);
+        userRepository.save(user);
+        pointsValidation(user);
+    }
+
     public void pointsValidation (User user) {
         if (!user.getPerfil().equals(Perfil.MODERADOR)) {
             if (user.getPoints() >= 20 && user.getPoints() < 100) {
@@ -86,7 +90,6 @@ public class UserServiceImpl implements UserService {
             if (user.getPoints() >= 1000){
                 user.setPerfil(Perfil.MODERADOR);
             }
-
        }
     }
 
@@ -102,9 +105,5 @@ public class UserServiceImpl implements UserService {
 
     }
 
-    public void incrementPointsUser(User user) {
-        user.setPoints(user.getPoints() + 1);
-        userRepository.save(user);
-        pointsValidation(user);
-    }
+
 }

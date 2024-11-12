@@ -10,9 +10,9 @@ import plat.filmes.repository.CommentsRepository;
 import plat.filmes.repository.MovieRepository;
 import plat.filmes.repository.UserRepository;
 import plat.filmes.service.CommentsService;
-import plat.filmes.service.MovieService;
 
-import java.util.Collections;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -55,17 +55,22 @@ public class CommentsServiceImpl implements CommentsService {
             comments.setId(comments.getId());
             comments.setImdbId(commentsDTO.getImdId());
             comments.setComment(commentsDTO.getComments());
-            comments.setUser(login);
+            comments.setLogin(login);
             comments.setTittle(searchTittle(commentsDTO.getImdId()));
 
             commentsRepository.save(comments);
             userService.incrementPointsUser(user);
 
-//            movieRepository.findById(comments.getImdbId()).ifPresent(m->
-//            {
-//                m.setComments(List.of(comments));
-//                movieRepository.save(m);
-//            });
+            movieRepository.findById(comments.getImdbId()).ifPresent(m->
+            {
+                List<Comments> existingComments = m.getComments();
+                if(existingComments ==null) {
+                    existingComments = new ArrayList<>();
+                }
+                existingComments.add(comments);
+                m.setComments(existingComments);
+                movieRepository.save(m);
+            });
 
             return comments;
         } else {

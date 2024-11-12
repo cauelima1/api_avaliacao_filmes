@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import plat.filmes.model.DTO.RatingMovieDTO;
 import plat.filmes.model.Movie;
-import plat.filmes.model.Perfil;
 import plat.filmes.model.Ratings;
 import plat.filmes.model.User;
 import plat.filmes.repository.MovieRepository;
@@ -50,18 +49,18 @@ public class RatingsServiceImpl implements RatingService {
             if (ratingMovieDTO.getRatingMovieByUser() <= 10 && ratingMovieDTO.getRatingMovieByUser() >= 0) {
                 User user = new User();
                 String login = userService.recoverUserLogin(Optional.of(user));
+                user = (User) userRepository.findByLogin(login);
 
-                if (!ratingRepository.existsByImdbIdAndUser(imdbId, login)) {
+                if (!ratingRepository.existsByImdbIdAndLogin(imdbId, login)) {
                     Movie movieToRate = movieRepository.findById(imdbId).get();
                     movieToRate.setImdbUser(ratingMovieDTO.getRatingMovieByUser());
-                    user = (User) userRepository.findByLogin(login);
 
-                    userService.incrementPointsUser(user);
                     Ratings ratings = new Ratings();
                     ratings.setId(ratings.getId());
-                    ratings.setUser(login);
+                    ratings.setLogin(login);
                     ratings.setImdbId(imdbId);
                     ratings.setRatingByUser(ratingMovieDTO.getRatingMovieByUser());
+                    userService.incrementPointsUser(user);
                     ratingRepository.save(ratings);
                     userService.AvarageRate(imdbId);
                     return ratings;
@@ -76,8 +75,6 @@ public class RatingsServiceImpl implements RatingService {
             throw new RuntimeException("This movie does not exists in repository.");
         }
     }
-
-
 }
 
 

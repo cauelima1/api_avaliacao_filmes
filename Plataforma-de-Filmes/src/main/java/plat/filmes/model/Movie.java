@@ -1,6 +1,7 @@
 package plat.filmes.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import plat.filmes.repository.MovieRepository;

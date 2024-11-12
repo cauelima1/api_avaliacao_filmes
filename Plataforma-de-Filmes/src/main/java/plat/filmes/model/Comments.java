@@ -1,10 +1,13 @@
 package plat.filmes.model;
 
 
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 
 @AllArgsConstructor
@@ -12,7 +15,6 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 public class Comments {
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -24,6 +26,8 @@ public class Comments {
     @Column
     private String tittle;
     @Column
-    private String user;
+    private String login;
 
+    @OneToMany
+    List<ReplyComments> replyComments;
 }

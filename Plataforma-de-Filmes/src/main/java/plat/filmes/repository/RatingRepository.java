@@ -10,7 +10,7 @@ public interface RatingRepository extends JpaRepository<Ratings, Long> {
 
     public List<Ratings> findByImdbId (String imdbId);
 
-    public boolean existsByImdbIdAndUser(String imdbId, String user);
+    public boolean existsByImdbIdAndLogin(String imdbId, String login);
 
     public boolean existsByImdbId(String imdbId);
 

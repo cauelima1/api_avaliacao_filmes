@@ -8,13 +8,16 @@ import org.springframework.web.bind.annotation.*;
 import plat.filmes.model.Comments;
 import plat.filmes.model.DTO.CommentsDTO;
 import plat.filmes.model.DTO.RatingMovieDTO;
+import plat.filmes.model.DTO.ReplyCommentsDTO;
 import plat.filmes.model.Movie;
 import plat.filmes.model.Ratings;
 import plat.filmes.repository.MovieRepository;
 import plat.filmes.repository.RatingRepository;
+import plat.filmes.service.ReplyCommentsService;
 import plat.filmes.service.impl.CommentsServiceImpl;
 import plat.filmes.service.impl.MovieServiceImpl;
 import plat.filmes.service.impl.RatingsServiceImpl;
+import plat.filmes.service.impl.ReplyCommentsServiceImpl;
 
 import java.util.List;
 
@@ -25,13 +28,15 @@ Classe criada para verificar os filmes diretamente do metodo GET no Insomnia
 @RequestMapping("/movies")
 public class MovieController {
 
+    private final ReplyCommentsServiceImpl replyCommentsService;
     private final RatingsServiceImpl ratingService;
     private final RatingRepository ratingRepository;
     private final MovieRepository movieRepository;
     private final MovieServiceImpl movieService;
     private final CommentsServiceImpl commentsService;
 
-    public MovieController(RatingsServiceImpl ratingService, RatingRepository ratingRepository, MovieRepository movieRepository, MovieServiceImpl movieService, CommentsServiceImpl commentsService) {
+    public MovieController(ReplyCommentsServiceImpl replyCommentsService, RatingsServiceImpl ratingService, RatingRepository ratingRepository, MovieRepository movieRepository, MovieServiceImpl movieService, CommentsServiceImpl commentsService) {
+        this.replyCommentsService = replyCommentsService;
         this.ratingService = ratingService;
         this.ratingRepository = ratingRepository;
         this.movieRepository = movieRepository;
@@ -62,17 +67,24 @@ public class MovieController {
         return ResponseEntity.ok(ratedMovie);
     }
 
-
     @PostMapping("/comments")
     public ResponseEntity<Comments> createMovieComments(@RequestBody CommentsDTO commentsDTO) {
         Comments comments = commentsService.create(commentsDTO);
         return ResponseEntity.ok(comments);
     }
 
-
     @GetMapping("/comments")
     public ResponseEntity<List<Comments>> showAllComments() {
         return ResponseEntity.ok(commentsService.findAll());
     }
+
+    @PostMapping("/comments/{imdbId}")
+    public ResponseEntity <Movie> replayComments(@PathVariable("imdbId") String imdbId
+                                                ,@RequestBody ReplyCommentsDTO replyCommentsDTO) {
+        Movie movie = replyCommentsService.replyComments(imdbId, replyCommentsDTO);
+        return ResponseEntity.ok(movie);
+    }
+
+
 
 }

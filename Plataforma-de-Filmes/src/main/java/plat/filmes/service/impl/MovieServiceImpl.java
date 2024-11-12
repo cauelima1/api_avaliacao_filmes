@@ -53,6 +53,7 @@ public class MovieServiceImpl implements MovieService {
     }
 
     public Movie consultMovie(String name) {
+
         OmdbDTO omdbDTO = omdbService.consultMovie(name);
         if(!movieRepository.existsById(omdbDTO.getImdbID())) {
             Movie movie = new Movie();
@@ -64,10 +65,8 @@ public class MovieServiceImpl implements MovieService {
 
             return movieRepository.save(movie);
         } else {
-            if (movieRepository.existsById(omdbDTO.getImdbID()))
-                return movieRepository.findById(omdbDTO.getImdbID()).get();
+            return movieRepository.findById(omdbDTO.getImdbID()).get();
         }
-        return null;
     }
 
 
