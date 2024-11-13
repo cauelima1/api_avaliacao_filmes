@@ -12,9 +12,13 @@ public class Movie {
 
     @Id
     private String imdbID;
+    @Column
     private String Title;
+    @Column
     private String Genre;
+    @Column
     private String imdbRating;
+    @Column
     private Double imdbUser;
 
     @OneToMany
@@ -31,10 +35,6 @@ public class Movie {
     public Movie(List<Comments> comments) {
         this.comments = comments;
     }
-
-
-
-
 
     public Movie(String imdbID, String title, String genre, String imdbRating, double imdbUser) {
         this.imdbID = imdbID;

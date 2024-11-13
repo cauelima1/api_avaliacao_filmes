@@ -36,7 +36,7 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST,"/auth/login").permitAll()
                         .requestMatchers(HttpMethod.POST,"/auth/register").permitAll()
                         .requestMatchers(HttpMethod.PUT,"/movies/rating").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/movies/comments/").hasAnyRole("BASICO", "AVANCADO","MODERADOR")
+                        .requestMatchers(HttpMethod.POST,"/movies/comments").hasAnyRole("BASICO", "AVANCADO","MODERADOR")
                         .requestMatchers(HttpMethod.POST,"/movies/comments/like").hasAnyRole("AVANCADO","MODERADOR")
                         .anyRequest().authenticated()
                 )
