@@ -38,6 +38,7 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.PUT,"/movies/rating").permitAll()
                         .requestMatchers(HttpMethod.POST,"/movies/comments").hasAnyRole("BASICO", "AVANCADO","MODERADOR")
                         .requestMatchers(HttpMethod.POST,"/movies/comments/like").hasAnyRole("AVANCADO","MODERADOR")
+                        .requestMatchers(HttpMethod.GET, "/movies/comments/duplicated/**").hasRole("MODERADOR")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

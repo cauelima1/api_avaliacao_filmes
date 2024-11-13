@@ -14,7 +14,9 @@ import plat.filmes.service.CommentsService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentsServiceImpl implements CommentsService {
@@ -83,6 +85,23 @@ public class CommentsServiceImpl implements CommentsService {
        Movie movie = movieRepository.findById(imdbId).get();
        String tittle = movie.getTitle();
         return tittle;
+    }
+
+
+    public List<Comments> duplicatedComments (){
+        List<Comments> allComments = commentsRepository.findAll();
+        if(!allComments.isEmpty()){
+            Map<String, Long> commentCountMap = allComments.stream()
+                    .collect(Collectors.groupingBy(Comments::getComment, Collectors.counting()));
+
+            List<Comments> duplicatedComments = allComments.stream()
+                    .filter(c->commentCountMap.get(c.getComment())>1)
+                    .distinct()
+                    .collect(Collectors.toList());
+
+            return duplicatedComments;
+        }
+        return null;
     }
 
 }

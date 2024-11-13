@@ -26,16 +26,7 @@ public class MovieServiceImpl implements MovieService {
     private OMDBService omdbService;
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private UserServiceImpl userService;
-
-    private final MovieRepository movieRepository;
-
-    public MovieServiceImpl(MovieRepository movieRepository) {
-        this.movieRepository = movieRepository;
-    }
+    private MovieRepository movieRepository;
 
     @Override
     public Optional<Movie> findById(String id) {

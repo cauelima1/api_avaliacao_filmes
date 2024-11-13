@@ -1,17 +1,13 @@
 package plat.filmes.controller;
 
 
-import org.apache.coyote.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import plat.filmes.model.DTO.QuoteDTO;
+import plat.filmes.model.DTO.*;
 import plat.filmes.model.submodel.Comments;
-import plat.filmes.model.DTO.CommentsDTO;
-import plat.filmes.model.DTO.RatingMovieDTO;
-import plat.filmes.model.DTO.ReplyCommentsDTO;
 import plat.filmes.model.Movie;
 import plat.filmes.model.submodel.Ratings;
-import plat.filmes.model.submodel.Quote;
 import plat.filmes.repository.MovieRepository;
 import plat.filmes.repository.QuoteRepository;
 import plat.filmes.repository.RatingRepository;
@@ -25,6 +21,9 @@ Classe criada para verificar os filmes diretamente do metodo GET no Insomnia
 @RestController
 @RequestMapping("/movies")
 public class MovieController {
+
+    @Autowired
+    private RepeatedCommentsService repeatedCommentsService;
 
     private final ReplyCommentsServiceImpl replyCommentsService;
     private final RatingsServiceImpl ratingService;
@@ -94,9 +93,21 @@ public class MovieController {
     }
 
     @GetMapping("/comments/like")
-    public ResponseEntity<List<Comments>> quoteCommentsConsult (){
-        return ResponseEntity.ok(quoteService.quoteCommentsByUser());
+    public ResponseEntity<List<Comments>> showAllQquotes (){
+        return ResponseEntity.ok(quoteService.quoteComments());
     }
 
+    @GetMapping("/comments/duplicated")
+    public ResponseEntity<List<Comments>> showDuplicatedComments (){
+        List<Comments> duplicated = commentsService.duplicatedComments();
+        return ResponseEntity.ok(duplicated);
+    }
+
+    @PostMapping("/comments/duplicated")
+    public ResponseEntity<Comments> repeatedComment (@RequestBody RepeatedCommentDTO repeatedCommentDTO) {
+        Comments repeatedComment = repeatedCommentsService.markAsRepeated(repeatedCommentDTO);
+
+    return ResponseEntity.ok(repeatedComment);
+    }
 
 }

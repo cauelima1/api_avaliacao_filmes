@@ -1,7 +1,6 @@
 package plat.filmes.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.aspectj.EnableSpringConfigured;
 import org.springframework.stereotype.Service;
 import plat.filmes.model.DTO.QuoteDTO;
 import plat.filmes.model.User;
@@ -37,14 +36,11 @@ public class QuoteServiceImpl {
             String login = userService.recoverUserLogin(Optional.of(user));
 
             Quote newQuote = new Quote();
-
             newQuote.setId(newQuote.getId());
             newQuote.setIdComment(quoteDTO.getIdComment());
             newQuote.setIfLike(quoteDTO.isIfLike());
             newQuote.setLogin(login);
-
             quoteRepository.save(newQuote);
-
             commentsRepository.findById(quoteDTO.getIdComment()).ifPresent(q->
             {
                 List<Quote> quotes = q.getQuotes();
@@ -60,9 +56,7 @@ public class QuoteServiceImpl {
         throw new RuntimeException("Comment not found to be quoted.");
     }
 
-    public List<Comments> quoteCommentsByUser (){
-        User user = new User();
-        String login = userService.recoverUserLogin(Optional.of(user));
+    public List<Comments> quoteComments(){
         List<Comments> commentsQuoted = commentsRepository.findAll().stream().filter(c->
                 c.getQuotes() != null && !c.getQuotes().isEmpty())
                 .collect(Collectors.toList());

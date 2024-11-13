@@ -102,8 +102,5 @@ public class UserServiceImpl implements UserService {
             movie.setImdbUser(media);
             movieRepository.save(movie);
         });
-
     }
-
-
 }

@@ -28,6 +28,10 @@ public class Comments {
     @Column
     private String login;
 
+    @OneToOne
+    private RepeatedComment repeatedComment;
+
+
     @OneToMany
     private List<Quote> quotes;
 
