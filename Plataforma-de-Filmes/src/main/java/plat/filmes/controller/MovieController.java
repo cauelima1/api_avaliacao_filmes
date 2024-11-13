@@ -1,23 +1,21 @@
 package plat.filmes.controller;
 
 
+import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import plat.filmes.model.Comments;
+import plat.filmes.model.DTO.QuoteDTO;
+import plat.filmes.model.submodel.Comments;
 import plat.filmes.model.DTO.CommentsDTO;
 import plat.filmes.model.DTO.RatingMovieDTO;
 import plat.filmes.model.DTO.ReplyCommentsDTO;
 import plat.filmes.model.Movie;
-import plat.filmes.model.Ratings;
+import plat.filmes.model.submodel.Ratings;
+import plat.filmes.model.submodel.Quote;
 import plat.filmes.repository.MovieRepository;
+import plat.filmes.repository.QuoteRepository;
 import plat.filmes.repository.RatingRepository;
-import plat.filmes.service.ReplyCommentsService;
-import plat.filmes.service.impl.CommentsServiceImpl;
-import plat.filmes.service.impl.MovieServiceImpl;
-import plat.filmes.service.impl.RatingsServiceImpl;
-import plat.filmes.service.impl.ReplyCommentsServiceImpl;
+import plat.filmes.service.impl.*;
 
 import java.util.List;
 
@@ -34,14 +32,18 @@ public class MovieController {
     private final MovieRepository movieRepository;
     private final MovieServiceImpl movieService;
     private final CommentsServiceImpl commentsService;
+    private final QuoteServiceImpl quoteService;
+    private final QuoteRepository quoteRepository;
 
-    public MovieController(ReplyCommentsServiceImpl replyCommentsService, RatingsServiceImpl ratingService, RatingRepository ratingRepository, MovieRepository movieRepository, MovieServiceImpl movieService, CommentsServiceImpl commentsService) {
+    public MovieController(ReplyCommentsServiceImpl replyCommentsService, RatingsServiceImpl ratingService, RatingRepository ratingRepository, MovieRepository movieRepository, MovieServiceImpl movieService, CommentsServiceImpl commentsService, QuoteServiceImpl quoteService, QuoteRepository quoteRepository) {
         this.replyCommentsService = replyCommentsService;
         this.ratingService = ratingService;
         this.ratingRepository = ratingRepository;
         this.movieRepository = movieRepository;
         this.movieService = movieService;
         this.commentsService = commentsService;
+        this.quoteService = quoteService;
+        this.quoteRepository = quoteRepository;
     }
 
     @GetMapping
@@ -85,6 +87,16 @@ public class MovieController {
         return ResponseEntity.ok(movie);
     }
 
+    @PostMapping("/comments/like")
+    public ResponseEntity<Comments> quoteComments (@RequestBody QuoteDTO quoteDTO){
+        Comments commentQuoted = quoteService.quoteOfComments(quoteDTO);
+        return ResponseEntity.ok(commentQuoted);
+    }
+
+    @GetMapping("/comments/like")
+    public ResponseEntity<List<Comments>> quoteCommentsConsult (){
+        return ResponseEntity.ok(quoteService.quoteCommentsByUser());
+    }
 
 
 }

@@ -1,13 +1,10 @@
 package plat.filmes.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
-import org.springframework.beans.factory.annotation.Autowired;
-import plat.filmes.repository.MovieRepository;
+import plat.filmes.model.submodel.Comments;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
 @Entity

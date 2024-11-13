@@ -1,7 +1,7 @@
 package plat.filmes.service;
 
 import org.springframework.stereotype.Service;
-import plat.filmes.model.Ratings;
+import plat.filmes.model.submodel.Ratings;
 
 import java.util.List;
 import java.util.Optional;

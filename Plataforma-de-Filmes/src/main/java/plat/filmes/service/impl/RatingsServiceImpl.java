@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import plat.filmes.model.DTO.RatingMovieDTO;
 import plat.filmes.model.Movie;
-import plat.filmes.model.Ratings;
+import plat.filmes.model.submodel.Ratings;
 import plat.filmes.model.User;
 import plat.filmes.repository.MovieRepository;
 import plat.filmes.repository.RatingRepository;

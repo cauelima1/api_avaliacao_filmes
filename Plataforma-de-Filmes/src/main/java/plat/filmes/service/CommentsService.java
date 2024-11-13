@@ -1,6 +1,6 @@
 package plat.filmes.service;
 
-import plat.filmes.model.Comments;
+import plat.filmes.model.submodel.Comments;
 import plat.filmes.model.DTO.CommentsDTO;
 
 import java.util.List;

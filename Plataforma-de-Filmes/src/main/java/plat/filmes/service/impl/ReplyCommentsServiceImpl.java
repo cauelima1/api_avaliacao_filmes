@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import plat.filmes.model.DTO.ReplyCommentsDTO;
 import plat.filmes.model.Movie;
-import plat.filmes.model.ReplyComments;
+import plat.filmes.model.submodel.ReplyComments;
 import plat.filmes.model.User;
 import plat.filmes.repository.CommentsRepository;
 import plat.filmes.repository.MovieRepository;

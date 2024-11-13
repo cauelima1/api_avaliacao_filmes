@@ -1,28 +1,36 @@
-package plat.filmes.model;
+package plat.filmes.model.submodel;
+
+
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
+import java.util.List;
+
+
 @AllArgsConstructor
 @NoArgsConstructor
+@Data
 @Entity
-@Table(name = "ratings", uniqueConstraints = {@UniqueConstraint(columnNames = {"user","imdbId"})})
-public class Ratings {
+public class Comments {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
+    @Column
+    private String comment;
     @Column
     private String imdbId;
-
+    @Column
+    private String tittle;
     @Column
     private String login;
 
-    @Column
-    private double ratingByUser;
+    @OneToMany
+    private List<Quote> quotes;
 
+    @OneToMany
+    private List<ReplyComments> replyComments;
 }

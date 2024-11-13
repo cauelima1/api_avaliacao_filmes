@@ -6,7 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import plat.filmes.model.DTO.UserDTO;
 import plat.filmes.model.Perfil;
-import plat.filmes.model.Ratings;
+import plat.filmes.model.submodel.Ratings;
 import plat.filmes.model.User;
 import plat.filmes.repository.MovieRepository;
 import plat.filmes.repository.RatingRepository;

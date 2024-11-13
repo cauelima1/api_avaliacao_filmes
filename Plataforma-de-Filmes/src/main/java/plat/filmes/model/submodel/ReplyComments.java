@@ -1,4 +1,4 @@
-package plat.filmes.model;
+package plat.filmes.model.submodel;
 
 
 import jakarta.persistence.*;

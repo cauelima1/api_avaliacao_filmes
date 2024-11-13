@@ -2,7 +2,7 @@ package plat.filmes.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import plat.filmes.model.Comments;
+import plat.filmes.model.submodel.Comments;
 import plat.filmes.model.DTO.CommentsDTO;
 import plat.filmes.model.Movie;
 import plat.filmes.model.User;
@@ -57,6 +57,7 @@ public class CommentsServiceImpl implements CommentsService {
             comments.setComment(commentsDTO.getComments());
             comments.setLogin(login);
             comments.setTittle(searchTittle(commentsDTO.getImdId()));
+            comments.setQuotes(null);
 
             commentsRepository.save(comments);
             userService.incrementPointsUser(user);

@@ -1,7 +1,7 @@
 package plat.filmes.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import plat.filmes.model.Ratings;
+import plat.filmes.model.submodel.Ratings;
 
 import java.util.List;
 
