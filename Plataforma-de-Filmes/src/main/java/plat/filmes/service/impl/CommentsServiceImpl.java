@@ -1,5 +1,6 @@
 package plat.filmes.service.impl;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import plat.filmes.model.submodel.Comments;
@@ -35,6 +36,13 @@ public class CommentsServiceImpl implements CommentsService {
 
     @Autowired
     private UserServiceImpl userService;
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+     commentsRepository.deleteById(id);
+
+    }
 
     @Override
     public Optional<Comments> findById(String id) {
@@ -104,6 +112,9 @@ public class CommentsServiceImpl implements CommentsService {
         return null;
     }
 
+
 }
+
+
 
 

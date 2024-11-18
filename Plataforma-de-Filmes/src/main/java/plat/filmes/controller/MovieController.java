@@ -8,6 +8,7 @@ import plat.filmes.model.DTO.*;
 import plat.filmes.model.submodel.Comments;
 import plat.filmes.model.Movie;
 import plat.filmes.model.submodel.Ratings;
+import plat.filmes.repository.CommentsRepository;
 import plat.filmes.repository.MovieRepository;
 import plat.filmes.repository.QuoteRepository;
 import plat.filmes.repository.RatingRepository;
@@ -22,9 +23,9 @@ Classe criada para verificar os filmes diretamente do metodo GET no Insomnia
 @RequestMapping("/movies")
 public class MovieController {
 
-    @Autowired
-    private RepeatedCommentsService repeatedCommentsService;
 
+    private final RepeatedCommentsService repeatedCommentsService;
+    private final CommentsRepository commentsRepository;
     private final ReplyCommentsServiceImpl replyCommentsService;
     private final RatingsServiceImpl ratingService;
     private final RatingRepository ratingRepository;
@@ -34,7 +35,9 @@ public class MovieController {
     private final QuoteServiceImpl quoteService;
     private final QuoteRepository quoteRepository;
 
-    public MovieController(ReplyCommentsServiceImpl replyCommentsService, RatingsServiceImpl ratingService, RatingRepository ratingRepository, MovieRepository movieRepository, MovieServiceImpl movieService, CommentsServiceImpl commentsService, QuoteServiceImpl quoteService, QuoteRepository quoteRepository) {
+    public MovieController(RepeatedCommentsService repeatedCommentsService, CommentsRepository commentsRepository, ReplyCommentsServiceImpl replyCommentsService, RatingsServiceImpl ratingService, RatingRepository ratingRepository, MovieRepository movieRepository, MovieServiceImpl movieService, CommentsServiceImpl commentsService, QuoteServiceImpl quoteService, QuoteRepository quoteRepository) {
+        this.repeatedCommentsService = repeatedCommentsService;
+        this.commentsRepository = commentsRepository;
         this.replyCommentsService = replyCommentsService;
         this.ratingService = ratingService;
         this.ratingRepository = ratingRepository;
@@ -79,6 +82,12 @@ public class MovieController {
         return ResponseEntity.ok(commentsService.findAll());
     }
 
+    @DeleteMapping("/comments/{id}")
+    public ResponseEntity<Void> deleteComment(@PathVariable("id") Long id){
+        commentsService.delete((id));
+        return ResponseEntity.noContent().build();
+    }
+
     @PostMapping("/comments/{imdbId}")
     public ResponseEntity <Movie> replayComments(@PathVariable("imdbId") String imdbId
                                                 ,@RequestBody ReplyCommentsDTO replyCommentsDTO) {
@@ -109,5 +118,6 @@ public class MovieController {
 
     return ResponseEntity.ok(repeatedComment);
     }
+
 
 }

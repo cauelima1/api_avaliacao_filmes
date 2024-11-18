@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import plat.filmes.model.DTO.OmdbDTO;
 import plat.filmes.model.Movie;
+import plat.filmes.model.submodel.Comments;
+import plat.filmes.repository.CommentsRepository;
 import plat.filmes.repository.MovieRepository;
 import plat.filmes.repository.RatingRepository;
 import plat.filmes.repository.UserRepository;
@@ -27,6 +29,9 @@ public class MovieServiceImpl implements MovieService {
 
     @Autowired
     private MovieRepository movieRepository;
+
+    @Autowired
+    private CommentsRepository commentsRepository;
 
     @Override
     public Optional<Movie> findById(String id) {
@@ -57,6 +62,16 @@ public class MovieServiceImpl implements MovieService {
             return movieRepository.save(movie);
         } else {
             return movieRepository.findById(omdbDTO.getImdbID()).get();
+        }
+    }
+
+    public void deleteCommentFromMovie(String imdbId, Long commentId){
+        Optional<Movie> movie = movieRepository.findById(imdbId);
+        if (movie.isPresent()){
+            List<Comments> commentsList = commentsRepository.findAll().stream().filter(c-> !c.getId().equals(commentId)).toList();
+            Movie movieWhtioutComment = null;
+            movieWhtioutComment.setComments(commentsList);
+            movieRepository.save(movieWhtioutComment);
         }
     }
 

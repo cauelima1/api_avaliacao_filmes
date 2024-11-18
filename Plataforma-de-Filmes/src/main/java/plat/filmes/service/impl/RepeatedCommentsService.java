@@ -9,8 +9,6 @@ import plat.filmes.repository.CommentsRepository;
 import plat.filmes.repository.MovieRepository;
 import plat.filmes.repository.RepeatedCommentRepository;
 
-import java.util.List;
-
 @Service
 public class RepeatedCommentsService {
 

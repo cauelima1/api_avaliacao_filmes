@@ -1,5 +1,6 @@
 package plat.filmes.service.impl;
 
+import org.hibernate.boot.jaxb.mapping.JaxbPostRemove;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -102,5 +103,15 @@ public class UserServiceImpl implements UserService {
             movie.setImdbUser(media);
             movieRepository.save(movie);
         });
+    }
+
+    public User changePerfil(String login){
+        try {
+            User user = (User) userRepository.findByLogin(login);
+            user.setPerfil(Perfil.MODERADOR);
+            return userRepository.save(user);
+        }catch (Exception e){
+            throw new RuntimeException("User not found.");
+        }
     }
 }

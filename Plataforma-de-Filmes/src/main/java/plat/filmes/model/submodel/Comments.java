@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import plat.filmes.model.Movie;
 
 import java.util.List;
 
@@ -30,7 +31,6 @@ public class Comments {
 
     @OneToOne
     private RepeatedComment repeatedComment;
-
 
     @OneToMany
     private List<Quote> quotes;

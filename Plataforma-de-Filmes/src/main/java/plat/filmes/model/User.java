@@ -1,15 +1,12 @@
 package plat.filmes.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
@@ -21,11 +18,38 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String login;
     private String password;
     private Perfil perfil;
     private int points;
+
+    private int failedLoginAttempts;
+    private LocalDateTime lastFailedLogin;
+    private boolean accountNonLocked;
+
+    public int getFailedLoginAttempts() {
+        return failedLoginAttempts;
+    }
+
+    public void setFailedLoginAttempts(int failedLoginAttempts) {
+        this.failedLoginAttempts = failedLoginAttempts;
+    }
+
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
+    }
+
+    public LocalDateTime getLastFailedLogin() {
+        return lastFailedLogin;
+    }
+
+    public void setLastFailedLogin(LocalDateTime lastFailedLogin) {
+        this.lastFailedLogin = lastFailedLogin;
+    }
+
+
+    public User() {
+    }
 
      public User (String login, String password,Perfil perfil){
         this.login = login;
@@ -53,9 +77,7 @@ public class User implements UserDetails {
         this.password = password;
     }
 
-    public Perfil getPerfil() {
-        return perfil;
-    }
+    public Perfil getPerfil() {return perfil; }
 
     public void setPerfil(Perfil perfil) {
         this.perfil = perfil;
@@ -69,18 +91,27 @@ public class User implements UserDetails {
         this.points = points;
     }
 
-    public User() {
-    }
-
     public User(Long id, String login, String password, Perfil perfil, int points) {
         this.id = id;
         this.login = login;
         this.password = password;
         this.perfil = perfil;
         this.points = points;
-
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(this.perfil == Perfil.MODERADOR){
+            return List.of(new SimpleGrantedAuthority("ROLE_MODERADOR"));
+        } if(this.perfil == Perfil.AVANCADO) {
+            return List.of(new SimpleGrantedAuthority("ROLE_AVANCADO"));
+        } if (this.perfil == Perfil.BASICO) {
+            return List.of(new SimpleGrantedAuthority("ROLE_BASICO"));
+        } if (this.perfil == Perfil.LEITOR) {
+            return List.of(new SimpleGrantedAuthority("ROLE_LEITOR"));
+        }
+        return List.of();
+    }
 
     @Override
     public String getPassword() {
@@ -97,9 +128,13 @@ public class User implements UserDetails {
         return true;
     }
 
+
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        if(lastFailedLogin == null){
+            return true;
+        }
+        return accountNonLocked || LocalDateTime.now().isAfter(lastFailedLogin.plusMinutes(30));
     }
 
     @Override
@@ -110,20 +145,6 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        if(this.perfil == Perfil.MODERADOR){
-            return List.of(new SimpleGrantedAuthority("ROLE_MODERADOR"));
-        } if(this.perfil == Perfil.AVANCADO) {
-            return List.of(new SimpleGrantedAuthority("ROLE_AVANCADO"));
-        } if (this.perfil == Perfil.BASICO) {
-            return List.of(new SimpleGrantedAuthority("ROLE_BASICO"));
-        } if (this.perfil == Perfil.LEITOR) {
-            return List.of(new SimpleGrantedAuthority("ROLE_LEITOR"));
-        }
-        return List.of();
     }
 
 }
