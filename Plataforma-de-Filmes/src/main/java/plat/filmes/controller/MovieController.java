@@ -1,7 +1,7 @@
 package plat.filmes.controller;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import plat.filmes.model.DTO.*;
@@ -12,17 +12,15 @@ import plat.filmes.repository.CommentsRepository;
 import plat.filmes.repository.MovieRepository;
 import plat.filmes.repository.QuoteRepository;
 import plat.filmes.repository.RatingRepository;
+import plat.filmes.service.CommentsService;
 import plat.filmes.service.impl.*;
 
 import java.util.List;
 
-/*
-Classe criada para verificar os filmes diretamente do metodo GET no Insomnia
- */
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/movies")
 public class MovieController {
-
 
     private final RepeatedCommentsService repeatedCommentsService;
     private final CommentsRepository commentsRepository;
@@ -31,22 +29,9 @@ public class MovieController {
     private final RatingRepository ratingRepository;
     private final MovieRepository movieRepository;
     private final MovieServiceImpl movieService;
-    private final CommentsServiceImpl commentsService;
+    private final CommentsService commentsService;
     private final QuoteServiceImpl quoteService;
     private final QuoteRepository quoteRepository;
-
-    public MovieController(RepeatedCommentsService repeatedCommentsService, CommentsRepository commentsRepository, ReplyCommentsServiceImpl replyCommentsService, RatingsServiceImpl ratingService, RatingRepository ratingRepository, MovieRepository movieRepository, MovieServiceImpl movieService, CommentsServiceImpl commentsService, QuoteServiceImpl quoteService, QuoteRepository quoteRepository) {
-        this.repeatedCommentsService = repeatedCommentsService;
-        this.commentsRepository = commentsRepository;
-        this.replyCommentsService = replyCommentsService;
-        this.ratingService = ratingService;
-        this.ratingRepository = ratingRepository;
-        this.movieRepository = movieRepository;
-        this.movieService = movieService;
-        this.commentsService = commentsService;
-        this.quoteService = quoteService;
-        this.quoteRepository = quoteRepository;
-    }
 
     @GetMapping
     public ResponseEntity<List<Movie>> showAllMovies(){
@@ -83,9 +68,9 @@ public class MovieController {
     }
 
     @DeleteMapping("/comments/{id}")
-    public ResponseEntity<Void> deleteComment(@PathVariable("id") Long id){
+    public ResponseEntity<List<Comments>> deleteComment(@PathVariable("id") Long id){
         commentsService.delete((id));
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok(commentsRepository.findAll());
     }
 
     @PostMapping("/comments/{imdbId}")

@@ -21,7 +21,7 @@ public class Movie {
     @Column
     private Double imdbUser;
 
-    @OneToMany
+    @OneToMany(mappedBy = "movie",cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<Comments> comments;
 
     public List<Comments> getComments() {
@@ -52,11 +52,9 @@ public class Movie {
         return imdbUser;
     }
 
-
     public void setImdbUser(Double imdbUser) {
         this.imdbUser = imdbUser;
     }
-
 
     public String getImdbID() {
         return imdbID;
@@ -92,6 +90,7 @@ public class Movie {
 
     public Movie (){
     }
+
 
 
 }

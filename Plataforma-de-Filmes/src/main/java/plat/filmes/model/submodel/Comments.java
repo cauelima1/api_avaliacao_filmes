@@ -2,6 +2,7 @@ package plat.filmes.model.submodel;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -18,7 +19,7 @@ import java.util.List;
 public class Comments {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
     private String comment;
@@ -29,6 +30,11 @@ public class Comments {
     @Column
     private String login;
 
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="movie_id", referencedColumnName = "imdbID", nullable = false)
+    private Movie movie;
+
     @OneToOne
     private RepeatedComment repeatedComment;
 
@@ -37,4 +43,5 @@ public class Comments {
 
     @OneToMany
     private List<ReplyComments> replyComments;
+
 }

@@ -65,15 +65,6 @@ public class MovieServiceImpl implements MovieService {
         }
     }
 
-    public void deleteCommentFromMovie(String imdbId, Long commentId){
-        Optional<Movie> movie = movieRepository.findById(imdbId);
-        if (movie.isPresent()){
-            List<Comments> commentsList = commentsRepository.findAll().stream().filter(c-> !c.getId().equals(commentId)).toList();
-            Movie movieWhtioutComment = null;
-            movieWhtioutComment.setComments(commentsList);
-            movieRepository.save(movieWhtioutComment);
-        }
-    }
 
 
 }

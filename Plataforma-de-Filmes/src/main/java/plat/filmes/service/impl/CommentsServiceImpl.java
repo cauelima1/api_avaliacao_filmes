@@ -1,6 +1,5 @@
 package plat.filmes.service.impl;
 
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import plat.filmes.model.submodel.Comments;
@@ -12,7 +11,6 @@ import plat.filmes.repository.MovieRepository;
 import plat.filmes.repository.UserRepository;
 import plat.filmes.service.CommentsService;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,9 +19,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class CommentsServiceImpl implements CommentsService {
-
-    @Autowired
-    private MovieServiceImpl movieService;
 
     @Autowired
     private UserRepository userRepository;
@@ -38,10 +33,8 @@ public class CommentsServiceImpl implements CommentsService {
     private UserServiceImpl userService;
 
     @Override
-    @Transactional
     public void delete(Long id) {
-     commentsRepository.deleteById(id);
-
+        commentsRepository.deleteById(id);
     }
 
     @Override
@@ -62,6 +55,8 @@ public class CommentsServiceImpl implements CommentsService {
             String login = userService.recoverUserLogin(Optional.of(user));
             user = (User) userRepository.findByLogin(login);
 
+            comments.setMovie(movieRepository.findById(commentsDTO.getImdId()).get());
+
             comments.setId(comments.getId());
             comments.setImdbId(commentsDTO.getImdId());
             comments.setComment(commentsDTO.getComments());
@@ -74,15 +69,14 @@ public class CommentsServiceImpl implements CommentsService {
 
             movieRepository.findById(comments.getImdbId()).ifPresent(m->
             {
-                List<Comments> existingComments = m.getComments();
-                if(existingComments ==null) {
-                    existingComments = new ArrayList<>();
+                List<Comments> newComments = m.getComments();
+                if(newComments ==null) {
+                    newComments = new ArrayList<>();
                 }
-                existingComments.add(comments);
-                m.setComments(existingComments);
+                newComments.add(comments);
+                m.setComments(newComments);
                 movieRepository.save(m);
             });
-
             return comments;
         } else {
             throw new RuntimeException("ImdbId not found.");

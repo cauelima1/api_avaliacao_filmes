@@ -18,4 +18,5 @@ public interface CommentsService {
     Comments create(CommentsDTO commentsDTO);
 
 
+    List<Comments> duplicatedComments();
 }
